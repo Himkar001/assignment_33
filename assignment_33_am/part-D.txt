@@ -1,0 +1,86 @@
+Part D: AI-Augmented Task
+
+------------------------------------------------------------------------
+
+Objective: Visualize how SVM decision boundary changes with different
+values of C and explain kernel trick.
+
+------------------------------------------------------------------------
+
+Step 1: Visualization Code
+
+import numpy as np import matplotlib.pyplot as plt from sklearn import
+datasets from sklearn.svm import SVC
+
+X, y = datasets.make_blobs(n_samples=200, centers=2, random_state=42,
+cluster_std=1.5)
+
+C_values = [0.01, 0.1, 1, 10, 100]
+
+plt.figure(figsize=(15, 10))
+
+for i, C in enumerate(C_values): model = SVC(kernel=‘linear’, C=C)
+model.fit(X, y)
+
+    plt.subplot(2, 3, i+1)
+    plt.scatter(X[:, 0], X[:, 1], c=y)
+
+    ax = plt.gca()
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+
+    xx = np.linspace(xlim[0], xlim[1], 30)
+    yy = np.linspace(ylim[0], ylim[1], 30)
+    YY, XX = np.meshgrid(yy, xx)
+    xy = np.vstack([XX.ravel(), YY.ravel()]).T
+    Z = model.decision_function(xy).reshape(XX.shape)
+
+    ax.contour(XX, YY, Z, levels=[0])
+
+    plt.title(f"C = {C}")
+
+plt.tight_layout() plt.show()
+
+------------------------------------------------------------------------
+
+Step 2: Observation
+
+-   Small C (0.01): Wide margin, more tolerance for misclassification
+
+-   Medium C (1): Balanced margin and accuracy
+
+-   Large C (100): Narrow margin, tries to classify all points
+    correctly, risk of overfitting
+
+------------------------------------------------------------------------
+
+Step 3: Kernel Trick Analogy
+
+Analogy:
+
+Imagine data points are tangled on a flat paper and cannot be separated
+by a straight line.
+
+Instead of drawing a complex curve on the paper, you lift the paper into
+3D space.
+
+Now, the points become separable by a flat plane in higher dimension.
+
+Kernel trick does this transformation mathematically without explicitly
+changing dimensions.
+
+------------------------------------------------------------------------
+
+Step 4: Evaluation
+
+-   The analogy is accurate because it explains mapping to higher
+    dimensions
+-   It is helpful as it avoids complex math
+-   Limitation: does not show how kernels compute similarity internally
+
+------------------------------------------------------------------------
+
+Conclusion:
+
+-   Parameter C controls bias vs variance trade-off
+-   Kernel trick allows SVM to handle non-linear data efficiently

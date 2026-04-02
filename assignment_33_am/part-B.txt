@@ -1,0 +1,83 @@
+Part B: Approximate Nearest Neighbors using FAISS
+
+------------------------------------------------------------------------
+
+Objective: Use FAISS library to perform fast nearest neighbor search and
+compare it with sklearn KNN.
+
+------------------------------------------------------------------------
+
+Step 1: Install FAISS
+
+pip install faiss-cpu
+
+------------------------------------------------------------------------
+
+Step 2: Load Dataset
+
+from sklearn.datasets import load_digits
+
+digits = load_digits() X, y = digits.data, digits.target
+
+------------------------------------------------------------------------
+
+Step 3: sklearn KNN Baseline
+
+from sklearn.neighbors import KNeighborsClassifier import time
+
+knn = KNeighborsClassifier(n_neighbors=3) knn.fit(X, y)
+
+start = time.time() knn_preds = knn.predict(X[:1000]) knn_time =
+time.time() - start
+
+knn_time
+
+------------------------------------------------------------------------
+
+Step 4: FAISS Implementation
+
+import faiss import numpy as np
+
+X_np = np.array(X).astype(‘float32’)
+
+index = faiss.IndexFlatL2(X_np.shape[1]) index.add(X_np)
+
+------------------------------------------------------------------------
+
+Step 5: FAISS Search
+
+queries = X_np[:1000]
+
+start = time.time() distances, indices = index.search(queries, 3)
+faiss_time = time.time() - start
+
+faiss_time
+
+------------------------------------------------------------------------
+
+Step 6: Compare Results
+
+print(“Sklearn KNN Time:”, knn_time) print(“FAISS Time:”, faiss_time)
+
+------------------------------------------------------------------------
+
+Expected Output (approx):
+
+Sklearn KNN Time: ~0.02 - 0.05 sec FAISS Time: ~0.005 - 0.01 sec
+
+------------------------------------------------------------------------
+
+Findings:
+
+-   FAISS is significantly faster than sklearn KNN
+-   Uses optimized vector search and indexing
+-   Works well for large-scale datasets
+-   Slight trade-off between exact accuracy and speed (for approximate
+    versions)
+
+------------------------------------------------------------------------
+
+Conclusion:
+
+FAISS is preferred for large datasets and real-time similarity search.
+Sklearn KNN is suitable for small datasets and simplicity.

@@ -1,0 +1,95 @@
+Part C: Interview Ready
+
+------------------------------------------------------------------------
+
+Q1: Conceptual
+
+Question: Difference between SVM and Logistic Regression (linear case)
+
+Answer:
+
+Logistic Regression: - Optimizes probability using sigmoid function -
+Minimizes log loss - Focuses on correctly classifying all points
+
+SVM: - Maximizes margin between classes - Uses only support vectors
+(critical boundary points) - Focuses on best separation, not probability
+
+When to prefer:
+
+Use Logistic Regression: - When probability output is needed - When
+interpretability is important
+
+Use SVM: - When data is high-dimensional - When margin-based separation
+is better
+
+------------------------------------------------------------------------
+
+Q2: Coding
+
+Function: KNN from scratch using NumPy
+
+Code:
+
+import numpy as np
+
+def knn_from_scratch(X_train, y_train, X_test, k):
+
+    predictions = []
+
+    for test_point in X_test:
+
+        distances = np.sqrt(((X_train - test_point) ** 2).sum(axis=1))
+
+        k_indices = np.argsort(distances)[:k]
+
+        k_labels = y_train[k_indices]
+
+        values, counts = np.unique(k_labels, return_counts=True)
+
+        pred = values[np.argmax(counts)]
+
+        predictions.append(pred)
+
+    return np.array(predictions)
+
+------------------------------------------------------------------------
+
+Q3: Debug
+
+Problem: SVM accuracy = 0.50 on binary classification
+
+Given: Feature scale example: salary (50K–200K)
+
+Issue:
+
+Features are not scaled
+
+SVM is sensitive to feature scale, especially with RBF kernel
+
+Large feature values distort distance calculations
+
+------------------------------------------------------------------------
+
+Fix:
+
+1.  Apply StandardScaler
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler() X_train = scaler.fit_transform(X_train) X_test
+= scaler.transform(X_test)
+
+2.  Tune hyperparameters
+
+Try different values of C and gamma
+
+3.  Check class imbalance
+
+Ensure dataset is balanced or use class_weight=‘balanced’
+
+------------------------------------------------------------------------
+
+Conclusion:
+
+Low accuracy is likely due to unscaled features. Scaling + tuning will
+significantly improve performance.
