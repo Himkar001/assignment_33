@@ -1,0 +1,96 @@
+Part C: Interview Ready
+
+------------------------------------------------------------------------
+
+Q1: Conceptual
+
+Question: Dataset has 100 features and 50 samples.
+
+Answer: This is a high-dimensional, low-sample dataset which leads to
+overfitting risk.
+
+Best Algorithms: - Logistic Regression → uses regularization, works well
+in high dimensions - Linear SVM → handles high-dimensional data
+effectively - Naive Bayes → simple model, works well with small data
+
+Algorithms that may fail: - Decision Tree → overfits easily - Random
+Forest → still overfits with very small data - KNN → suffers from curse
+of dimensionality - Gradient Boosting / XGBoost → too complex, overfits
+small data
+
+Conclusion: Use simple, regularized models.
+
+------------------------------------------------------------------------
+
+Q2: Coding
+
+Function: model_selection_report
+
+Code:
+
+import numpy as np import pandas as pd from sklearn.model_selection
+import train_test_split, StratifiedKFold, cross_val_score from
+sklearn.preprocessing import StandardScaler from scipy.stats import
+ttest_rel
+
+def model_selection_report(X, y, models_dict):
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+
+    results = {}
+
+    for name, model in models_dict.items():
+        scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='accuracy')
+        results[name] = scores
+
+    df = pd.DataFrame(results)
+
+    mean_scores = df.mean().sort_values(ascending=False)
+    best_model = mean_scores.index[0]
+
+    stats = {}
+    for model in df.columns:
+        if model != best_model:
+            stat, p = ttest_rel(df[best_model], df[model])
+            stats[model] = p
+
+    print("Mean CV Scores:\n", mean_scores)
+    print("\nBest Model:", best_model)
+    print("\nP-values vs Best Model:\n", stats)
+
+    return df, best_model, stats
+
+Explanation: - Splits data - Scales features - Runs cross-validation -
+Uses paired t-test to compare models
+
+------------------------------------------------------------------------
+
+Q3: Analyze
+
+Problem: SVM (RBF) Train Accuracy = 1.0 Test Accuracy = 0.52
+
+Issue: Severe overfitting
+
+Fixes:
+
+1.  Tune hyperparameters Example: SVC(C=0.1, gamma=‘scale’)
+
+2.  Use GridSearchCV Tune C and gamma values
+
+3.  Reduce feature complexity Use PCA or feature selection
+
+Conclusion: Overfitting can be reduced using regularization, tuning, and
+feature reduction.
+
+------------------------------------------------------------------------
+
+Final Summary: - Small dataset → use simple models - Always validate
+using cross-validation - Overfitting must be controlled with tuning and
+regularization

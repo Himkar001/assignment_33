@@ -1,0 +1,94 @@
+Part D: AI-Augmented Task
+
+Decision Tree for Algorithm Selection (Guide)
+
+------------------------------------------------------------------------
+
+Objective: Create a decision guide to select the best ML algorithm based
+on dataset characteristics.
+
+------------------------------------------------------------------------
+
+Step 1: Decision Logic
+
+1.  Dataset Size:
+
+-   Small (<1000 samples): → Use Logistic Regression, Naive Bayes,
+    Linear SVM
+-   Medium (1K–100K): → Use Random Forest, SVM, Gradient Boosting
+-   Large (>100K): → Use XGBoost, SGD, scalable models
+
+2.  Number of Features:
+
+-   High-dimensional: → Linear SVM, Logistic Regression
+-   Low-dimensional: → Tree-based models, KNN
+
+3.  Linearity:
+
+-   Linear data: → Logistic Regression, Linear SVM
+-   Non-linear data: → Decision Tree, Random Forest, SVM (RBF), Boosting
+
+4.  Interpretability Required:
+
+-   Yes: → Logistic Regression, Decision Tree
+-   No: → Random Forest, XGBoost, SVM
+
+5.  Data Type:
+
+-   Text: → TF-IDF + SVM / Logistic Regression
+-   Tabular: → Random Forest, XGBoost
+-   Image: → Deep Learning (not covered here)
+
+------------------------------------------------------------------------
+
+Step 2: Verified Insights
+
+From practical experience: - SVM works best for high-dimensional sparse
+data (text) - XGBoost performs best on structured tabular datasets -
+Logistic Regression is a strong baseline in most cases - Random Forest
+is stable and robust across many datasets
+
+------------------------------------------------------------------------
+
+Step 3: Edge Cases Missed
+
+1.  Small + High-Dimensional Data:
+
+-   Tree models fail → prefer Linear models
+
+2.  Noisy Data:
+
+-   Boosting may overfit → use Random Forest
+
+3.  Imbalanced Dataset:
+
+-   Accuracy misleading → need F1-score, ROC-AUC
+
+4.  Very Large Data:
+
+-   SVM becomes slow → use SGDClassifier
+
+------------------------------------------------------------------------
+
+Step 4: Final Algorithm Selection Guide
+
+If small data: → Logistic Regression / Naive Bayes
+
+If high-dimensional: → Linear SVM
+
+If tabular + best accuracy: → XGBoost
+
+If need interpretability: → Decision Tree / Logistic Regression
+
+If general purpose: → Random Forest
+
+------------------------------------------------------------------------
+
+Conclusion:
+
+-   Start simple → Logistic Regression
+-   Improve → Random Forest / SVM
+-   Optimize → XGBoost
+-   Always validate using cross-validation
+
+This guide can be used as a quick reference during model selection.

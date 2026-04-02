@@ -1,0 +1,87 @@
+Part B: SVM for Text Classification (TF-IDF + Pipeline)
+
+Objective: Use 20 Newsgroups dataset, apply TF-IDF with SVM and compare
+with Logistic Regression.
+
+------------------------------------------------------------------------
+
+Step 1: Load Dataset
+
+from sklearn.datasets import fetch_20newsgroups
+
+categories = [‘alt.atheism’, ‘comp.graphics’, ‘sci.med’,
+‘rec.sport.baseball’]
+
+train_data = fetch_20newsgroups(subset=‘train’, categories=categories,
+remove=(‘headers’,‘footers’,‘quotes’)) test_data =
+fetch_20newsgroups(subset=‘test’, categories=categories,
+remove=(‘headers’,‘footers’,‘quotes’))
+
+X_train, y_train = train_data.data, train_data.target X_test, y_test =
+test_data.data, test_data.target
+
+Explanation: We selected 4 categories to simplify classification and
+reduce training time.
+
+------------------------------------------------------------------------
+
+Step 2: TF-IDF + SVM Pipeline
+
+from sklearn.pipeline import Pipeline from
+sklearn.feature_extraction.text import TfidfVectorizer from sklearn.svm
+import LinearSVC
+
+svm_pipeline = Pipeline([ (‘tfidf’,
+TfidfVectorizer(stop_words=‘english’, max_df=0.7)), (‘svm’,
+LinearSVC())])
+
+svm_pipeline.fit(X_train, y_train)
+
+Explanation: TF-IDF converts text into numerical vectors. LinearSVC is
+efficient for high-dimensional text data.
+
+------------------------------------------------------------------------
+
+Step 3: Evaluate SVM
+
+from sklearn.metrics import accuracy_score, classification_report
+
+svm_preds = svm_pipeline.predict(X_test)
+
+print(“SVM Accuracy:”, accuracy_score(y_test, svm_preds))
+print(classification_report(y_test, svm_preds))
+
+Output (approx): SVM Accuracy: 0.86 - 0.90
+
+------------------------------------------------------------------------
+
+Step 4: Logistic Regression Pipeline
+
+from sklearn.linear_model import LogisticRegression
+
+lr_pipeline = Pipeline([ (‘tfidf’, TfidfVectorizer(stop_words=‘english’,
+max_df=0.7)), (‘lr’, LogisticRegression(max_iter=1000))])
+
+lr_pipeline.fit(X_train, y_train)
+
+lr_preds = lr_pipeline.predict(X_test)
+
+print(“Logistic Regression Accuracy:”, accuracy_score(y_test, lr_preds))
+
+Output (approx): Logistic Regression Accuracy: 0.83 - 0.88
+
+------------------------------------------------------------------------
+
+Comparison:
+
+SVM: - Higher accuracy - Works well for sparse high-dimensional data
+
+Logistic Regression: - Slightly lower accuracy - More interpretable
+
+------------------------------------------------------------------------
+
+Conclusion:
+
+SVM (LinearSVC) performs better for text classification using TF-IDF. It
+is preferred when accuracy is important. Logistic Regression is useful
+when interpretability is required.

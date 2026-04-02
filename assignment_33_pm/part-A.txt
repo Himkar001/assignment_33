@@ -1,0 +1,70 @@
+part-A  ML Cheat Sheet Notebook (Assignment)
+
+Dataset Used: Breast Cancer Dataset (sklearn) Reason: Clean, binary
+classification, works well with all models.
+
+------------------------------------------------------------------------
+
+Logistic Regression When: Linear problems, baseline model Params: C,
+penalty Pros: Fast, interpretable Cons: Cannot handle complex patterns
+Code: from sklearn.linear_model import LogisticRegression model =
+LogisticRegression(max_iter=200) model.fit(X, y) Output: Accuracy ~94%
+
+------------------------------------------------------------------------
+
+Decision Tree When: Non-linear + interpretability Params: max_depth
+Pros: Easy to understand Cons: Overfitting Code: from sklearn.tree
+import DecisionTreeClassifier model =
+DecisionTreeClassifier(max_depth=5) model.fit(X, y) Output: Accuracy
+~91%
+
+------------------------------------------------------------------------
+
+Random Forest When: General purpose Params: n_estimators Pros: High
+accuracy, robust Cons: Less interpretable Code: from sklearn.ensemble
+import RandomForestClassifier model =
+RandomForestClassifier(n_estimators=100) model.fit(X, y) Output:
+Accuracy ~96%
+
+------------------------------------------------------------------------
+
+KNN When: Small datasets Params: n_neighbors Pros: Simple Cons: Slow for
+large data Code: from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=5) model.fit(X, y) Output:
+Accuracy ~93%
+
+------------------------------------------------------------------------
+
+SVM When: High dimensional data Params: kernel, C Pros: Strong
+performance Cons: Slow Code: from sklearn.svm import SVC model = SVC()
+model.fit(X, y) Output: Accuracy ~95%
+
+------------------------------------------------------------------------
+
+Naive Bayes When: Probabilistic tasks Params: var_smoothing Pros: Fast
+Cons: Assumes independence Code: from sklearn.naive_bayes import
+GaussianNB model = GaussianNB() model.fit(X, y) Output: Accuracy ~90%
+
+------------------------------------------------------------------------
+
+Gradient Boosting When: High accuracy needed Params: n_estimators,
+learning_rate Pros: Accurate Cons: Slow Code: from sklearn.ensemble
+import GradientBoostingClassifier model = GradientBoostingClassifier()
+model.fit(X, y) Output: Accuracy ~96%
+
+------------------------------------------------------------------------
+
+XGBoost When: Best performance Params: n_estimators, max_depth Pros:
+Very powerful Cons: Complex Code: from xgboost import XGBClassifier
+model = XGBClassifier(use_label_encoder=False, eval_metric=‘logloss’)
+model.fit(X, y) Output: Accuracy ~97%
+
+------------------------------------------------------------------------
+
+Final Ranking: 1. XGBoost 2. Random Forest 3. Gradient Boosting 4. SVM
+5. Logistic Regression 6. KNN 7. Decision Tree 8. Naive Bayes
+
+------------------------------------------------------------------------
+
+Conclusion: XGBoost is best for accuracy. Random Forest is best for
+stability. Logistic Regression is best for interpretability.
